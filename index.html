@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scam Game - Genshin & Liên Quân</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo" onclick="showPage('home')">SCAM<span>GAME</span></div>
+            <ul class="nav-links">
+                <li><a href="javascript:void(0)" onclick="showPage('home')">Trang chủ</a></li>
+                <li><a href="#about-section">Thông tin</a></li>
+                <li><a href="#genshin-title">Genshin Impact</a></li>
+                <li><a href="#lienquan-title">Liên Quân</a></li>
+            </ul>
+            <div class="cart-btn" onclick="showPage('cart')">
+                GIAN HÀNG (<span id="cart-count">0</span>)
+            </div>
+        </nav>
+    </header>
+
+    <div id="home-page">
+        <section class="hero">
+            <h1>Shop Tài Khoản Game Uy Tín</h1>
+            <p>Chuyên cung cấp tài khoản Genshin Impact và Liên Quân Mobile giá rẻ.</p>
+        </section>
+
+        <section id="about-section" class="container">
+            <div class="about-box">
+                <h2>Về SCAM GAME</h2>
+                <p>Chúng tôi là hệ thống cung cấp tài khoản game tự động hàng đầu Việt Nam. Với hơn 5 tiếng kinh nghiệm, SCAM GAME cam kết:</p>
+                <div class="about-grid">
+                    <div class="about-item">🛡️ <b>Bảo mật:</b> Tài khoản sạch 100%, bảo hành trọn đời.</div>
+                    <div class="about-item">⚡ <b>Tự động:</b> Nhận tài khoản ngay sau 30s thanh toán.</div>
+                    <div class="about-item">📞 <b>Hỗ trợ:</b> Đội ngũ CSKH trực chiến 24/7.</div>
+                </div>
+            </div>
+        </section>
+
+        <main class="container">
+            <h2 id="genshin-title">Tài khoản Genshin Impact</h2>
+            <div class="grid" id="genshin-grid"></div>
+
+            <h2 id="lienquan-title">Tài khoản Liên Quân Mobile</h2>
+            <div class="grid" id="lienquan-grid"></div>
+        </main>
+    </div>
+
+    <div id="cart-page" class="hidden">
+        <div class="container">
+            <h2 style="border-left: 5px solid #ff4655; padding-left: 10px;">Gian hàng của bạn</h2>
+            <div id="cart-items">
+                </div>
+            <div id="cart-empty" class="empty-msg">
+                <p>Bạn chưa chọn tài khoản nào.</p>
+                <button onclick="showPage('home')" style="margin-top: 20px;">Quay lại cửa hàng</button>
+            </div>
+            <div id="cart-summary" class="hidden">
+                <div class="total-box">
+                    <h3>Tổng thanh toán: <span id="total-price" style="color: #00ff88;">0đ</span></h3>
+                    <button class="buy-btn" style="width: 200px; margin-top: 15px;" onclick="alert('Đang chuyển hướng đến trang thanh toán...')">Thanh toán ngay</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 SCAM GAME. Chúng tôi scam, chúng tôi không lừa đảo.</p>
+        <p> Thông tin liên lạc về chúng tôi: Macdangthanh2005@gmail.com</p>
+        <p> Zalo: 03562837198</p>
+        <p> Facebook: HPUni</p>
+        <p> X: hotx.com</p>
+    </footer>
+
+    <script>
+    let cart = [];
+
+    // 1. DANH SÁCH TÀI KHOẢN
+    const genshinData = [
+        { name: "Mã tài khoản #001", desc: "AR 60, Nahida c2, Raiden c6,...", price: 1200000, img: "https://static.wikia.nocookie.net/gensin-impact/images/d/d2/Nahida_Birthday_2025.png/revision/latest?cb=20251027040132" },
+        { name: "Mã tài khoản #002", desc: "AR 59, Furina c1, Columbina c0,...", price: 3200000, img: "https://scontent.fhan3-1.fna.fbcdn.net/v/t39.30808-6/517603934_1120757316878218_5917077062896810076_n.jpg?stp=dst-jpg_p526x296_tt6&_nc_cat=102&ccb=1-7&_nc_sid=13d280&_nc_eui2=AeGWSFnGrwCll5QH-vKrR7OgxvfVu8almSTG99W7xqWZJFTZdptUkuIEWnM1f1F1KIcq-u2SwX7oK0eKrjg2yMc3&_nc_ohc=6kMYdOGmvpAQ7kNvwGOo5fp&_nc_oc=Adly1-lOqzbv8fWn_aMqMSZQcYCohaoPgy9szjhOay93GmTwwlnhOuRFUkUltV_Swvgk-MHuXDyPWnjaavVMT5Co&_nc_zt=23&_nc_ht=scontent.fhan3-1.fna&_nc_gid=RBs78U87xeM0sg2_kNFiHQ&_nc_ss=8&oh=00_AfwehFIpNc7yxNrtMqdfCJSlZ-0IsS-UoPjV3-JRkod4Og&oe=69BFF41F" },
+        { name: "Mã tài khoản #003", desc: "AR 60, Chiori c5, Raiden c4,...", price: 1200000, img: "https://cellphones.com.vn/sforum/wp-content/uploads/2024/01/genshin-impact-bo-ky-nang-chiori.jpg" },
+        { name: "Mã tài khoản #004", desc: "AR 60, Flins c3, Ineffa c5,...", price: 5600000, img: "https://upload-os-bbs.hoyolab.com/upload/2025/09/18/65472989/e27e221059b6da20bc86c9bc7741352d_7282525431623261136.png?x-oss-process=image%2Fresize%2Cs_1000%2Fauto-orient%2C0%2Finterlace%2C1%2Fformat%2Cwebp%2Fquality%2Cq_70" },
+        { name: "Mã tài khoản #005", desc: "AR 60, Nefer c6, Lauma c3,...", price: 8900000, img: "https://assetsio.gnwcdn.com/Genshin-Impact-Nefer-Header.jpg?width=690&quality=85&format=jpg&dpr=3&auto=webp" },
+        { name: "Mã tài khoản #006", desc: "AR 60, Mavuika c2, Xilonen c2,...", price: 5600000, img: "https://st.download.com.vn/data/image/2024/07/16/Genshin-impact-mavuika-7.jpg" },
+        { name: "Mã tài khoản #007", desc: "AR 60, Arlecchino c2, Citlaly c1,...", price: 7700000, img: "https://cellphones.com.vn/sforum/wp-content/uploads/2024/04/genshin-impact-build-arlecchino-1.jpg" },
+        { name: "Mã tài khoản #008", desc: "AR 60, Neuvillete c1, Furina c5,...", price: 9900000, img: "https://cdn2.fptshop.com.vn/unsafe/800x0/neuvillette_1_fbeb13cd6b.jpg" },
+        { name: "Mã tài khoản #009", desc: "AR 60, Columbina c4, Flins c4,...", price: 6500000, img: "https://static0.srcdn.com/wordpress/wp-content/uploads/2025/12/genshin-impact-columbina-ascension-materials-talents-prefarm-guide.jpg?w=1600&h=900&fit=crop" },
+        { name: "Mã tài khoản #010", desc: "AR 60, Ayaka c5, Ayato c3,...", price: 5600000, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuYlm2aWF7R4aaVJE7H61g4-volgevfEy1LQ&s" },
+        { name: "Mã tài khoản #011", desc: "AR 60, Skirk c6, Escoffier c6,...", price: 2300000, img: "https://gamelade.vn/wp-content/uploads/2025/05/The-Stars-Fade-to-Black-Genshin-Impact-Introduced-Skirk.webp" },
+        { name: "Mã tài khoản #012", desc: "AR 60, Varka c3, Durin c4,...", price: 6700000, img: "https://cdn.topuplive.com/cdn-cgi/image/quality=low,format=webp/uploads/images/goods/20260114/1768372142_eNehyKNPUq.jpeg" },
+        { name: "Mã tài khoản #013", desc: "AR 60, Navia c4, Zhongli c5,...", price: 4500000, img: "https://cdn-media.sforum.vn/storage/app/media/wp-content/uploads/2023/12/genshin-impact-build-navia-3.jpg" },
+    ];
+
+    const lienquanData = [
+        { name: "Mã tài khoản #1001", desc: "Rank Thách Đấu, 300 Skin", price: 8700000, img: "https://i.ytimg.com/vi/4RRu8WgHgfc/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLCgCXxjpqiwskTcwrFkIVeOCYCCeQ" },
+        { name: "Mã tài khoản #1002", desc: "Rank Chiến tướng, 450 Skin", price: 12300000, img: "https://cdn2.fptshop.com.vn/unsafe/800x0/skin_liliana_4_dd5462738a.png" },
+        { name: "Mã tài khoản #1003", desc: "Rank Thách Đấu, 234 Skin", price: 66600000, img: "https://lienquan.garena.vn/wp-content/uploads/2024/05/51015.jpg" },
+        { name: "Mã tài khoản #1004", desc: "Rank Thách Đấu, 879 Skin", price: 3300000, img: "https://cdn-media.sforum.vn/storage/app/media/wp-content/uploads/2023/03/lien-quan-avatar-1.jpg" },
+        { name: "Mã tài khoản #1005", desc: "Rank cao thủ, 900 Skin", price: 67800000, img: "https://vtcpay.vn/blog/wp-content/uploads/2025/09/skin-dep-nhat-lien-quan-01.jpg" },
+        { name: "Mã tài khoản #1006", desc: "Rank Tinh anh, 456 Skin", price: 53200000, img: "https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/skin_tet_lien_quan_001_2f6db4845a.jpg" },
+        { name: "Mã tài khoản #1007", desc: "Rank Đồng, 777 Skin", price: 56700000, img: "https://dl.ops.kgvn.garenanow.com/H5/skinreview/14213/thumbImage.jpg" },
+        { name: "Mã tài khoản #1008", desc: "Rank Cao thủ, 573 Skin", price: 24500000, img: "https://cdn.gametv.vn/news_media/image/11_0x0_1661141059.png" },
+        { name: "Mã tài khoản #1009", desc: "Rank Thách Đấu, 347 Skin", price: 3200000, img: "https://cdn-www.bluestacks.com/bs-images/lqm-new-impressive-skins-coming-vi-4.jpeg" },
+        { name: "Mã tài khoản #1010", desc: "Rank Chiến tướng, 869 Skin", price: 10000000, img: "https://bloganchoi.com/wp-content/uploads/2022/12/lo-dien-skin-telannas-moi-nhat-lien-quan-bac-sss-khung-696x392.jpg" },
+        { name: "Mã tài khoản #1011", desc: "Rank Kim cương, 437 Skin", price: 23400000, img: "https://i.pinimg.com/736x/e4/37/5f/e4375f20d7eb79f6feaffc51b095b02f.jpg" },
+        { name: "Mã tài khoản #1012", desc: "Rank Thách Đấu, 999 Skin", price: 2500000, img: "https://cellphones.com.vn/sforum/wp-content/uploads/2023/01/07.jpg" },
+    ];
+
+    window.onload = function() {
+        renderGenshin();
+        renderLienQuan();
+    };
+
+    // 2. HÀM HIỂN THỊ (Sửa lại để lấy dữ liệu từ danh sách trên)
+    function renderGenshin() {
+        const grid = document.getElementById('genshin-grid');
+        grid.innerHTML = genshinData.map(acc => `
+            <div class="card">
+                <img src="${acc.img}" alt="Acc">
+                <div class="card-info">
+                    <h3>${acc.name}</h3>
+                    <p>${acc.desc}</p>
+                    <p class="price">${acc.price.toLocaleString()}đ</p>
+                    <button class="buy-btn" onclick="addToCart('${acc.name}', ${acc.price})">MUA NGAY</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function renderLienQuan() {
+        const grid = document.getElementById('lienquan-grid');
+        grid.innerHTML = lienquanData.map(acc => `
+            <div class="card">
+                <img src="${acc.img}" alt="Acc">
+                <div class="card-info">
+                    <h3>${acc.name}</h3>
+                    <p>${acc.desc}</p>
+                    <p class="price">${acc.price.toLocaleString()}đ</p>
+                    <button class="buy-btn" onclick="addToCart('${acc.name}', ${acc.price})">MUA NGAY</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // --- Các hàm addToCart, removeFromCart, showPage giữ nguyên như cũ ---
+    function addToCart(name, price) {
+        cart.push({ name, price });
+        document.getElementById('cart-count').innerText = cart.length;
+        alert("Đã thêm " + name + " vào gian hàng!");
+        updateCartPage();
+    }
+
+    function removeFromCart(index) {
+        cart.splice(index, 1);
+        document.getElementById('cart-count').innerText = cart.length;
+        updateCartPage();
+    }
+
+    function updateCartPage() {
+        const container = document.getElementById('cart-items');
+        const summary = document.getElementById('cart-summary');
+        const emptyMsg = document.getElementById('cart-empty');
+        const totalPrice = document.getElementById('total-price');
+
+        if (cart.length === 0) {
+            emptyMsg.classList.remove('hidden');
+            summary.classList.add('hidden');
+            container.innerHTML = '';
+        } else {
+            emptyMsg.classList.add('hidden');
+            summary.classList.remove('hidden');
+            
+            let total = 0;
+            container.innerHTML = cart.map((item, index) => {
+                total += item.price;
+                return `
+                    <div class="cart-row">
+                        <div>
+                            <strong>${item.name}</strong>
+                            <p style="color: #ff4655">${item.price.toLocaleString()}đ</p>
+                        </div>
+                        <button class="del-btn" onclick="removeFromCart(${index})">Xóa</button>
+                    </div>
+                `;
+            }).join('');
+            totalPrice.innerText = total.toLocaleString() + 'đ';
+        }
+    }
+
+    function showPage(page) {
+        if (page === 'home') {
+            document.getElementById('home-page').classList.remove('hidden');
+            document.getElementById('cart-page').classList.add('hidden');
+        } else {
+            document.getElementById('home-page').classList.add('hidden');
+            document.getElementById('cart-page').classList.remove('hidden');
+            updateCartPage();
+        }
+        window.scrollTo(0, 0);
+    }
+</script>
+</body>
+</html>
