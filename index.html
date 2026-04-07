@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scam Game - Genshin & Liên Quân</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo" onclick="showPage('home')">SCAM<span>GAME</span></div>
+            <ul class="nav-links">
+                <li><a href="javascript:void(0)" onclick="showPage('home')">Trang chủ</a></li>
+                <li><a href="#about-section">Thông tin</a></li>
+                <li><a href="#genshin-title">Genshin Impact</a></li>
+                <li><a href="#lienquan-title">Liên Quân</a></li>
+            </ul>
+            <div class="cart-btn" onclick="showPage('cart')">
+                GIAN HÀNG (<span id="cart-count">0</span>)
+            </div>
+        </nav>
+    </header>
+
+    <div id="home-page">
+        <section class="hero">
+            <h1>Shop Tài Khoản Game Uy Tín</h1>
+            <p>Chuyên cung cấp tài khoản Genshin Impact và Liên Quân Mobile giá rẻ.</p>
+        </section>
+
+        <section id="about-section" class="container">
+            <div class="about-box">
+                <h2>Về SCAM GAME</h2>
+                <p>Chúng tôi là hệ thống cung cấp tài khoản game tự động hàng đầu Việt Nam. Với hơn 5 tiếng kinh nghiệm, SCAM GAME cam kết:</p>
+                <div class="about-grid">
+                    <div class="about-item">🛡️ <b>Bảo mật:</b> Tài khoản sạch 100%, bảo hành trọn đời.</div>
+                    <div class="about-item">⚡ <b>Tự động:</b> Nhận tài khoản ngay sau 30s thanh toán.</div>
+                    <div class="about-item">📞 <b>Hỗ trợ:</b> Đội ngũ CSKH trực chiến 24/7.</div>
+                </div>
+            </div>
+        </section>
+
+        <main class="container">
+            <h2 id="genshin-title">Tài khoản Genshin Impact</h2>
+            <div class="grid" id="genshin-grid"></div>
+
+            <h2 id="lienquan-title">Tài khoản Liên Quân Mobile</h2>
+            <div class="grid" id="lienquan-grid"></div>
+        </main>
+    </div>
+
+    <div id="cart-page" class="hidden">
+        <div class="container">
+            <h2 style="border-left: 5px solid #ff4655; padding-left: 10px;">Gian hàng của bạn</h2>
+            <div id="cart-items">
+                </div>
+            <div id="cart-empty" class="empty-msg">
+                <p>Bạn chưa chọn tài khoản nào.</p>
+                <button onclick="showPage('home')" style="margin-top: 20px;">Quay lại cửa hàng</button>
+            </div>
+            <div id="cart-summary" class="hidden">
+                <div class="total-box">
+                    <h3>Tổng thanh toán: <span id="total-price" style="color: #00ff88;">0đ</span></h3>
+                    <button class="buy-btn" style="width: 200px; margin-top: 15px;" onclick="openCheckout()">Thanh toán ngay</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 SCAM GAME. Chúng tôi scam, chúng tôi không lừa đảo.</p>
+        <p> Thông tin liên lạc về chúng tôi: Macdangthanh2005@gmail.com</p>
+        <p> Zalo: 03562837198</p>
+        <p> Facebook: HPUni</p>
+        <p> X: hotx.com</p>
+    </footer>
+
+    <script>
+    let cart = [];
+
+    // 1. DANH SÁCH TÀI KHOẢN
+    const genshinData = [
+        { 
+        name: 'Acc VIP 01', 
+        desc: 'AR 60, Nahida c2, Raiden c6,...', // Cái này hiện ở ngoài
+        price: 150000, 
+        img: 'https://static.wikia.nocookie.net/gensin-impact/images/d/d2/Nahida_Birthday_2025.png/revision/latest?cb=20251027040132',
+        // Thêm phần thông tin chi tiết ở dưới đây:
+        specs: [
+            "Cấp thế giới (AR): 55",
+            "Nhân vật 5 sao: Raiden Shogun, Nahida, Kazuha",
+            "Vũ khí: Trấn trấn lôi, Tiếng thở dài vô tận",
+            "Thông tin: Chưa liên kết số điện thoại"
+        ]
+    },
+    { 
+        name: 'Acc VIP 02', 
+        desc: 'AR 60, Chiori c5, Raiden c4,...', // Cái này hiện ở ngoài
+        price: 234578, 
+        img: 'https://cellphones.com.vn/sforum/wp-content/uploads/2024/01/genshin-impact-bo-ky-nang-chiori.jpg',
+        // Thêm phần thông tin chi tiết ở dưới đây:
+        specs: [
+            "Cấp thế giới (AR): 55",
+            "Nhân vật 5 sao: Raiden Shogun, Nahida, Kazuha",
+            "Vũ khí: Trấn trấn lôi, Tiếng thở dài vô tận",
+            "Thông tin: Chưa liên kết số điện thoại"
+        ]
+    },
+    { 
+        name: 'Acc VIP 03', 
+        desc: 'AR 60, Flins c3, Ineffa c5,...', // Cái này hiện ở ngoài
+        price: 212932, 
+        img: 'https://upload-os-bbs.hoyolab.com/upload/2025/09/18/65472989/e27e221059b6da20bc86c9bc7741352d_7282525431623261136.png?x-oss-process=image%2Fresize%2Cs_1000%2Fauto-orient%2C0%2Finterlace%2C1%2Fformat%2Cwebp%2Fquality%2Cq_70',
+        // Thêm phần thông tin chi tiết ở dưới đây:
+        specs: [
+            "Cấp thế giới (AR): 55",
+            "Nhân vật 5 sao: Raiden Shogun, Nahida, Kazuha",
+            "Vũ khí: Trấn trấn lôi, Tiếng thở dài vô tận",
+            "Thông tin: Chưa liên kết số điện thoại"
+        ]
+    },
+    { 
+        name: 'Acc VIP 04', 
+        desc: 'AR 60, Nefer c6, Lauma c3,...', // Cái này hiện ở ngoài
+        price: 123475, 
+        img: 'https://assetsio.gnwcdn.com/Genshin-Impact-Nefer-Header.jpg?width=690&quality=85&format=jpg&dpr=3&auto=webp',
+        // Thêm phần thông tin chi tiết ở dưới đây:
+        specs: [
+            "Cấp thế giới (AR): 55",
+            "Nhân vật 5 sao: Raiden Shogun, Nahida, Kazuha",
+            "Vũ khí: Trấn trấn lôi, Tiếng thở dài vô tận",
+            "Thông tin: Chưa liên kết số điện thoại"
+        ]
+    },
+    { 
+        name: 'Acc VIP 05', 
+        desc: 'AR 60, Mavuika c2, Xilonen c2,...', // Cái này hiện ở ngoài
+        price: 324567, 
+        img: 'https://st.download.com.vn/data/image/2024/07/16/Genshin-impact-mavuika-7.jpg',
+        // Thêm phần thông tin chi tiết ở dưới đây:
+        specs: [
+            "Cấp thế giới (AR): 55",
+            "Nhân vật 5 sao: Raiden Shogun, Nahida, Kazuha",
+            "Vũ khí: Trấn trấn lôi, Tiếng thở dài vô tận",
+            "Thông tin: Chưa liên kết số điện thoại"
+        ]
+    },
+    { 
+        name: 'Acc VIP 06', 
+        desc: 'AR 60, Arlecchino c2, Citlaly c1,...', // Cái này hiện ở ngoài
+        price: 547432, 
+        img: 'https://cellphones.com.vn/sforum/wp-content/uploads/2024/04/genshin-impact-build-arlecchino-1.jpg',
+        // Thêm phần thông tin chi tiết ở dưới đây:
+        specs: [
+            "Cấp thế giới (AR): 55",
+            "Nhân vật 5 sao: Raiden Shogun, Nahida, Kazuha",
+            "Vũ khí: Trấn trấn lôi, Tiếng thở dài vô tận",
+            "Thông tin: Chưa liên kết số điện thoại"
+        ]
+    },
+    { 
+        name: 'Acc VIP 07', 
+        desc: 'AR 60, Neuvillete c1, Furina c5,...', // Cái này hiện ở ngoài
+        price: 234578, 
+        img: 'https://cdn2.fptshop.com.vn/unsafe/800x0/neuvillette_1_fbeb13cd6b.jpg',
+        // Thêm phần thông tin chi tiết ở dưới đây:
+        specs: [
+            "Cấp thế giới (AR): 55",
+            "Nhân vật 5 sao: Raiden Shogun, Nahida, Kazuha",
+            "Vũ khí: Trấn trấn lôi, Tiếng thở dài vô tận",
+            "Thông tin: Chưa liên kết số điện thoại"
+        ]
+    },
+    { 
+        name: 'Acc VIP 08', 
+        desc: 'AR 60, Columbina c4, Flins c4,...', // Cái này hiện ở ngoài
+        price: 357544, 
+        img: 'https://static0.srcdn.com/wordpress/wp-content/uploads/2025/12/genshin-impact-columbina-ascension-materials-talents-prefarm-guide.jpg?w=1600&h=900&fit=crop',
+        // Thêm phần thông tin chi tiết ở dưới đây:
+        specs: [
+            "Cấp thế giới (AR): 55",
+            "Nhân vật 5 sao: Raiden Shogun, Nahida, Kazuha",
+            "Vũ khí: Trấn trấn lôi, Tiếng thở dài vô tận",
+            "Thông tin: Chưa liên kết số điện thoại"
+        ]
+    },
+    { 
+        name: 'Acc VIP 09', 
+        desc: 'AR 60, Ayaka c5, Ayato c3,...', // Cái này hiện ở ngoài
+        price: 776543, 
+        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuYlm2aWF7R4aaVJE7H61g4-volgevfEy1LQ&s',
+        // Thêm phần thông tin chi tiết ở dưới đây:
+        specs: [
+            "Cấp thế giới (AR): 55",
+            "Nhân vật 5 sao: Raiden Shogun, Nahida, Kazuha",
+            "Vũ khí: Trấn trấn lôi, Tiếng thở dài vô tận",
+            "Thông tin: Chưa liên kết số điện thoại"
+        ]
+    },
+    { 
+        name: 'Acc VIP 10', 
+        desc: 'AR 60, Skirk c6, Escoffier c6,...', // Cái này hiện ở ngoài
+        price: 768964, 
+        img: 'https://gamelade.vn/wp-content/uploads/2025/05/The-Stars-Fade-to-Black-Genshin-Impact-Introduced-Skirk.webp',
+        // Thêm phần thông tin chi tiết ở dưới đây:
+        specs: [
+            "Cấp thế giới (AR): 55",
+            "Nhân vật 5 sao: Raiden Shogun, Nahida, Kazuha",
+            "Vũ khí: Trấn trấn lôi, Tiếng thở dài vô tận",
+            "Thông tin: Chưa liên kết số điện thoại"
+        ]
+    },
+
+    ];
+
+    const lienquanData = [
+        {
+        name: 'Acc Liên Quân 01',
+        desc: 'Rank Thách Đấu, 300 Skin',
+        price: 2354667,
+        img: 'https://i.ytimg.com/vi/4RRu8WgHgfc/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLCgCXxjpqiwskTcwrFkIVeOCYCCeQ',
+        specs: [
+            "Bậc rank: Cao Thủ",
+            "Số tướng: 110",
+            "Số trang phục: 150 (Có Skin SSS)",
+            "Tình trạng: Trắng thông tin"
+        ]
+    },
+    {
+        name: 'Acc Liên Quân 02',
+        desc: 'Rank Chiến tướng, 450 Skin',
+        price: 3578963,
+        img: 'https://cdn2.fptshop.com.vn/unsafe/800x0/skin_liliana_4_dd5462738a.png',
+        specs: [
+            "Bậc rank: Cao Thủ",
+            "Số tướng: 110",
+            "Số trang phục: 150 (Có Skin SSS)",
+            "Tình trạng: Trắng thông tin"
+        ]
+    },
+    {
+        name: 'Acc Liên Quân 03',
+        desc: 'Rank Thách Đấu, 234 Skin',
+        price: 346895,
+        img: 'https://lienquan.garena.vn/wp-content/uploads/2024/05/51015.jpg',
+        specs: [
+            "Bậc rank: Cao Thủ",
+            "Số tướng: 110",
+            "Số trang phục: 150 (Có Skin SSS)",
+            "Tình trạng: Trắng thông tin"
+        ]
+    },
+    {
+        name: 'Acc Liên Quân 04',
+        desc: 'Rank Thách Đấu, 879 Skin',
+        price: 346889,
+        img: 'https://cdn-media.sforum.vn/storage/app/media/wp-content/uploads/2023/03/lien-quan-avatar-1.jpg',
+        specs: [
+            "Bậc rank: Cao Thủ",
+            "Số tướng: 110",
+            "Số trang phục: 150 (Có Skin SSS)",
+            "Tình trạng: Trắng thông tin"
+        ]
+    },
+    {
+        name: 'Acc Liên Quân 05',
+        desc: 'Rank cao thủ, 900 Skin',
+        price: 235678,
+        img: 'https://vtcpay.vn/blog/wp-content/uploads/2025/09/skin-dep-nhat-lien-quan-01.jpg',
+        specs: [
+            "Bậc rank: Cao Thủ",
+            "Số tướng: 110",
+            "Số trang phục: 150 (Có Skin SSS)",
+            "Tình trạng: Trắng thông tin"
+        ]
+    },
+    {
+        name: 'Acc Liên Quân 06',
+        desc: 'Rank Tinh anh, 456 Skin',
+        price: 7432345,
+        img: 'https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/skin_tet_lien_quan_001_2f6db4845a.jpg',
+        specs: [
+            "Bậc rank: Cao Thủ",
+            "Số tướng: 110",
+            "Số trang phục: 150 (Có Skin SSS)",
+            "Tình trạng: Trắng thông tin"
+        ]
+    },
+    {
+        name: 'Acc Liên Quân 07',
+        desc: 'Rank Đồng, 777 Skin',
+        price: 234567,
+        img: 'https://dl.ops.kgvn.garenanow.com/H5/skinreview/14213/thumbImage.jpg',
+        specs: [
+            "Bậc rank: Cao Thủ",
+            "Số tướng: 110",
+            "Số trang phục: 150 (Có Skin SSS)",
+            "Tình trạng: Trắng thông tin"
+        ]
+    },
+    {
+        name: 'Acc Liên Quân 08',
+        desc: 'Rank Cao thủ, 573 Skin',
+        price: 234567,
+        img: 'https://cdn.gametv.vn/news_media/image/11_0x0_1661141059.png',
+        specs: [
+            "Bậc rank: Cao Thủ",
+            "Số tướng: 110",
+            "Số trang phục: 150 (Có Skin SSS)",
+            "Tình trạng: Trắng thông tin"
+        ]
+    },
+    {
+        name: 'Acc Liên Quân 09',
+        desc: 'Rank Thách Đấu, 347 Skin',
+        price: 345635,
+        img: 'https://cdn-www.bluestacks.com/bs-images/lqm-new-impressive-skins-coming-vi-4.jpeg',
+        specs: [
+            "Bậc rank: Cao Thủ",
+            "Số tướng: 110",
+            "Số trang phục: 150 (Có Skin SSS)",
+            "Tình trạng: Trắng thông tin"
+        ]
+    },
+    {
+        name: 'Acc Liên Quân 10',
+        desc: 'Rank Chiến tướng, 869 Skin',
+        price: 145675,
+        img: 'https://bloganchoi.com/wp-content/uploads/2022/12/lo-dien-skin-telannas-moi-nhat-lien-quan-bac-sss-khung-696x392.jpg',
+        specs: [
+            "Bậc rank: Cao Thủ",
+            "Số tướng: 110",
+            "Số trang phục: 150 (Có Skin SSS)",
+            "Tình trạng: Trắng thông tin"
+        ]
+    },
+    
+    ];
+// --- CÁC HÀM MỚI ĐỂ ĐIỀU KHIỂN CỬA SỔ (MODAL) ---
+
+// 1. Hàm mở xem chi tiết tài khoản
+function openDetails(type, index) {
+    const data = type === 'genshin' ? genshinData[index] : lienquanData[index];
+    const body = document.getElementById('modal-body-details');
+    
+    // Tạo danh sách gạch đầu dòng từ mảng specs
+    // Nếu không có specs (đề phòng bạn quên nhập), nó sẽ hiện thông báo mặc định
+    const specsHtml = data.specs 
+        ? data.specs.map(item => `<li>✅ ${item}</li>`).join('')
+        : "<li>Chưa có thông tin chi tiết cho tài khoản này.</li>";
+
+    // Tìm trong hàm openDetails đoạn hiển thị ảnh và sửa thành:
+body.innerHTML = `
+    <div style="text-align: center;">
+        <img src="${data.img}" style="width: 100%; max-height: 350px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; border: 2px solid #ff4655;">
+            <h2 style="color: #ff4655; margin-bottom: 10px;">${data.name}</h2>
+            
+            <div style="text-align: left; background: #2a2a2a; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                <h4 style="color: #888; margin-bottom: 8px; text-transform: uppercase; font-size: 0.8rem;">Thông số tài khoản:</h4>
+                <ul style="list-style: none; line-height: 1.8;">
+                    ${specsHtml}
+                </ul>
+            </div>
+
+            <p style="color: #00ff88; font-weight: bold; font-size: 1.8rem; margin-bottom: 15px;">${data.price.toLocaleString()}đ</p>
+            
+            <button class="buy-btn" onclick="addToCart('${data.name}', ${data.price}); closeModal('details-modal');">
+                THÊM VÀO GIỎ HÀNG
+            </button>
+        </div>
+    `;
+    document.getElementById('details-modal').classList.remove('hidden');
+}
+
+// 2. Hàm mở form thanh toán
+function openCheckout() {
+    if (cart.length === 0) {
+        alert("Giỏ hàng của bạn đang trống!");
+        return;
+    }
+    document.getElementById('checkout-modal').classList.remove('hidden');
+}
+
+// 3. Hàm đóng bất kỳ modal nào
+function closeModal(id) {
+    document.getElementById(id).classList.add('hidden');
+}
+
+// 4. Hàm xử lý khi nhấn "Xác nhận thanh toán"
+function confirmPayment() {
+    const email = document.getElementById('cus-email').value;
+    const name = document.getElementById('cus-name').value;
+
+    if (!name || !email) {
+        alert("Vui lòng nhập tên và email để nhận tài khoản!");
+        return;
+    }
+
+    alert("Xác nhận thành công! Quý khách vui lòng kiểm tra Gmail: " + email + " để nhận tài khoản mà quý khách đã mua.");
+    
+    // Xóa giỏ hàng sau khi mua xong
+    cart = [];
+    document.getElementById('cart-count').innerText = "0";
+    closeModal('checkout-modal');
+    showPage('home');
+}
+    window.onload = function() {
+        renderGenshin();
+        renderLienQuan();
+    };
+
+    // 2. HÀM HIỂN THỊ (Sửa lại để lấy dữ liệu từ danh sách trên)
+    // --- THAY THẾ HAI HÀM RENDER CŨ ---
+
+function renderGenshin() {
+    const grid = document.getElementById('genshin-grid');
+    grid.innerHTML = genshinData.map((acc, index) => `
+        <div class="card">
+            <img src="${acc.img}" alt="Acc">
+            <div class="card-info">
+                <h3>${acc.name}</h3>
+                <p>${acc.desc}</p>
+                <p class="price">${acc.price.toLocaleString()}đ</p>
+                <div style="display: flex; gap: 5px;">
+                    <button class="buy-btn" onclick="addToCart('${acc.name}', ${acc.price})">MUA</button>
+                    <button class="del-btn" style="color:white; flex:1" onclick="openDetails('genshin', ${index})">CHI TIẾT</button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderLienQuan() {
+    const grid = document.getElementById('lienquan-grid');
+    grid.innerHTML = lienquanData.map((acc, index) => `
+        <div class="card">
+            <img src="${acc.img}" alt="Acc">
+            <div class="card-info">
+                <h3>${acc.name}</h3>
+                <p>${acc.desc}</p>
+                <p class="price">${acc.price.toLocaleString()}đ</p>
+                <div style="display: flex; gap: 5px;">
+                    <button class="buy-btn" onclick="addToCart('${acc.name}', ${acc.price})">MUA</button>
+                    <button class="del-btn" style="color:white; flex:1" onclick="openDetails('lienquan', ${index})">CHI TIẾT</button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+    // --- Các hàm addToCart, removeFromCart, showPage giữ nguyên như cũ ---
+    function addToCart(name, price) {
+        cart.push({ name, price });
+        document.getElementById('cart-count').innerText = cart.length;
+        alert("Đã thêm " + name + " vào gian hàng!");
+        updateCartPage();
+    }
+
+    function removeFromCart(index) {
+        cart.splice(index, 1);
+        document.getElementById('cart-count').innerText = cart.length;
+        updateCartPage();
+    }
+
+    function updateCartPage() {
+    const container = document.getElementById('cart-items');
+    const summary = document.getElementById('cart-summary');
+    const emptyMsg = document.getElementById('cart-empty');
+    const totalPrice = document.getElementById('total-price');
+
+    if (cart.length === 0) {
+        emptyMsg.classList.remove('hidden');
+        summary.classList.add('hidden');
+        container.innerHTML = '';
+    } else {
+        emptyMsg.classList.add('hidden');
+        summary.classList.remove('hidden');
+        
+        let total = 0;
+        container.innerHTML = cart.map((item, index) => {
+            total += item.price;
+            return `
+                <div class="cart-row">
+                    <div>
+                        <strong>${item.name}</strong>
+                        <p style="color: #ff4655">${item.price.toLocaleString()}đ</p>
+                    </div>
+                    <button class="del-btn" onclick="removeFromCart(${index})">Xóa</button>
+                </div>
+            `;
+        }).join('');
+
+        // Dòng này rất quan trọng để cập nhật tổng tiền lên giao diện
+        totalPrice.innerText = total.toLocaleString() + 'đ'; 
+    }
+}
+
+    function showPage(page) {
+        if (page === 'home') {
+            document.getElementById('home-page').classList.remove('hidden');
+            document.getElementById('cart-page').classList.add('hidden');
+        } else {
+            document.getElementById('home-page').classList.add('hidden');
+            document.getElementById('cart-page').classList.remove('hidden');
+            updateCartPage();
+        }
+        window.scrollTo(0, 0);
+    }
+</script>
+<div id="details-modal" class="modal hidden">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('details-modal')">&times;</span>
+        <div id="modal-body-details">
+            </div>
+    </div>
+</div>
+
+<div id="checkout-modal" class="modal hidden">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('checkout-modal')">&times;</span>
+        <h2 style="color: #ff4655; margin-bottom: 20px;">Thông Tin Thanh Toán</h2>
+        <div class="checkout-container">
+            <div class="customer-info">
+                <input type="text" id="cus-name" placeholder="Họ và tên" required>
+                <input type="tel" id="cus-phone" placeholder="Số điện thoại" required>
+                <input type="email" id="cus-email" placeholder="Email nhận tài khoản" required>
+                <p style="font-size: 0.8rem; color: #aaa; margin-top: 10px;">* Vui lòng nhập đúng Email để nhận thông tin đăng nhập.</p>
+            </div>
+            <div class="qr-section">
+                <p>Quét mã QR để thanh toán:</p>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=SCAMGAME_PAYMENT" alt="Mã QR Thanh Toán" class="qr-img">
+            </div>
+        </div>
+        <button class="buy-btn" style="margin-top: 20px;" onclick="confirmPayment()">Xác Nhận Thanh Toán</button>
+    </div>
+</div>
+</body>
+</html>
